@@ -3,8 +3,9 @@ import string
 import json
 import os
 
-STORED_FILE = r"C:\Users\cgustaveson\Password Manager\passwords.json"
-os.makedirs(os.path.dirname(STORED_FILE), exist_ok=True)
+BASE_DIR = os.path.join(os.path.expanduser("~"), "Password Manager")
+STORED_FILE = os.path.join(BASE_DIR, "passwords.json")
+os.makedirs(BASE_DIR, exist_ok=True)
 
 def create_password(length=16):
     chars = string.ascii_letters + string.digits + string.punctuation
