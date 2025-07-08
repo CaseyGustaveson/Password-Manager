@@ -56,8 +56,8 @@ def load_data():
     with open(STORED_FILE, 'r') as f:
         try:
             return json.load(f)
-        except json.JSONDecodeError:
-            print("Stored password file is corrupted.")
+        except Exception:
+            print("Error loading stored password file")
             return {}
 
 
