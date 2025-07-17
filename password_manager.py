@@ -1,4 +1,5 @@
 import random
+import pyperclip
 import string
 import json
 import os
@@ -7,9 +8,21 @@ BASE_DIR = os.path.join(os.path.expanduser("~"), "Password Manager")
 STORED_FILE = os.path.join(BASE_DIR, "passwords.json")
 os.makedirs(BASE_DIR, exist_ok=True)
 
+
+def load_data():
+    if not os.path.exists(STORED_FILE):
+        return {}
+    with open(STORED_FILE, 'r') as f:
+        try:
+            return json.load(f)
+        except Exception:
+            print("Error loading stored password file")
+            return {}
+
 def create_password(length=16):
     chars = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(chars) for _ in range(length))
+    pyperclip.copy(password)
     return password
 
 def save_password(service, username, password):
@@ -50,15 +63,7 @@ def delete_password(service):
     else:
         print(f"No entry found for {service}")
 
-def load_data():
-    if not os.path.exists(STORED_FILE):
-        return {}
-    with open(STORED_FILE, 'r') as f:
-        try:
-            return json.load(f)
-        except Exception:
-            print("Error loading stored password file")
-            return {}
+
 
 
 if __name__ == "__main__":
@@ -103,6 +108,7 @@ if __name__ == "__main__":
             if creds:
                 print("Username:", creds["username"])
                 print("Password:", creds["password"])
+                pyperclip.copy(creds["password"])
             else:
                 print("No password found for that service.")
         elif choice == "4":
