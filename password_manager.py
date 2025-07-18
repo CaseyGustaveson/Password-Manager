@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path.home() / "Password Manager"
-STORED_FILE = BASE_DIR / "passwords.json"
+STORED_FILE = BASE_DIR / "secrets.json"
 os.makedirs(BASE_DIR, exist_ok=True)
 
 
