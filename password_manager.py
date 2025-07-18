@@ -10,6 +10,8 @@ os.makedirs(BASE_DIR, exist_ok=True)
 
 
 def load_data():
+    # Loads saved passwords from the JSON file.
+    # Returns an empty dictionary if the file doesn't exist or can't be read.
     if not os.path.exists(STORED_FILE):
         return {}
     with open(STORED_FILE, 'r') as f:
@@ -20,12 +22,14 @@ def load_data():
             return {}
 
 def create_password(length=16):
+    #Have the app create a password for you
     chars = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(chars) for _ in range(length))
     pyperclip.copy(password)
     return password
 
 def save_password(service, username, password):
+    #Save a password created outside the tool
     data = load_data()
 
     if service in data:
@@ -47,10 +51,12 @@ def save_password(service, username, password):
         input("Press Enter to exit...")
 
 def get_password(service):
+    #Retrieve saved password
     data = load_data()
     return data.get(service)
 
 def delete_password(service):
+    #Delete saved password
     data = load_data()
     if not data:
         print("No stored passwords.")
@@ -63,6 +69,10 @@ def delete_password(service):
     else:
         print(f"No entry found for {service}")
 
+def random_string(length):
+    # creates a random string
+    chars = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(random.choice(chars) for _ in range(length))
 
 
 
@@ -73,7 +83,8 @@ if __name__ == "__main__":
         print("3. Retrieve Password")
         print("4. Delete Password")
         print("5. Saved services")
-        print("6. Exit")
+        print("6. Create Random String")
+        print("7. Exit")
         choice = input("Choose an option: \n")
 
         if choice == "1":
@@ -122,8 +133,21 @@ if __name__ == "__main__":
                     print("-", service)
             else:
                 print("No services saved.")
-
         elif choice == "6":
+            try:
+                string_length = int(input("How many characters for your string?"))
+                if string_length < 1 or string_length > 512:
+                    print("Please enter a length between 1 and 512")
+                    continue
+            except ValueError:
+                print("Invalid input; please enter a number")
+                continue
+            generated_string = random_string(string_length)
+            print("Random String:", generated_string)
+            pyperclip.copy(generated_string)
+            print("(Copied to clipboard)")
+
+        elif choice == "7":
             break
 
         else:
