@@ -3,9 +3,10 @@ import pyperclip
 import string
 import json
 import os
+from pathlib import Path
 
-BASE_DIR = os.path.join(os.path.expanduser("~"), "Password Manager")
-STORED_FILE = os.path.join(BASE_DIR, "passwords.json")
+BASE_DIR = Path.home() / "Password Manager"
+STORED_FILE = BASE_DIR / "passwords.json"
 os.makedirs(BASE_DIR, exist_ok=True)
 
 
